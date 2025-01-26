@@ -3,6 +3,7 @@ import type { ErrorRequestHandler, RequestHandler } from 'express';
 import type z from 'zod';
 import { ZodError } from 'zod';
 
+// Pass promise rejections to error handler
 export const asyncWrapper =
     (handler: RequestHandler): RequestHandler =>
     async (req, res, next) => {

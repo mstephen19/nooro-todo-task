@@ -13,5 +13,6 @@ model Task {
   title String
   color String
   completed Boolean @default(false)
+  // Including unix timestamp, so tasks can be sorted based on creation date & completed state
   created BigInt
 }
