@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --black: #0d0d0d;
+    --grey: #1a1a1a;
+    --lightgrey: #262626;
+    --extralightgrey: #333333;
+    --blue: #1e6fa0;
+    --purple: #5858bd;
+}
+
+* {
+    font-family: var(--font-open-sans);
+    color: white;
+}
+
+body {
+    background: var(--grey);
+    width: 100dvw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
