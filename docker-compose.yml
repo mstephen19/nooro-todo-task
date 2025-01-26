@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+    db:
+        container_name: 'db'
+        image: mysql
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: 'root'
+            MYSQL_DATABASE: 'todos'
+            MYSQL_TCP_PORT: 3306
+        healthcheck:
+            test: ['CMD', 'mysqladmin', 'ping', '--host=localhost', '--user=root', '--password=root']
+            interval: 2s
+            retries: 25
+            timeout: 5s
+            start_period: 10s
+        volumes:
+            - 'data:/var/lib/mysql'
+    server:
+        depends_on:
+            db:
+                # Wait for MySQL server to be ready before starting server
+                condition: service_healthy
+        container_name: 'server'
+        build:
+            context: './server'
+        ports:
+            - '3001:3001'
+        volumes:
+            - './server/src:/app/src:ro'
+            - '/app/node_modules'
+            - 'migrations:/app/prisma/migrations'
+    client:
+        depends_on:
+            - server
+        container_name: 'client'
+        build:
+            context: './client'
+        ports:
+            - '3000:3000'
+        volumes:
+            - './client:/app:ro'
+            - '/app/node_modules'
+            - '/app/.next'
+        stdin_open: true
+        tty: true
+volumes:
+    data:
+    migrations:

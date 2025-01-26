@@ -1,0 +1,17 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  // hardcoding only for dev purposes
+  url      = "mysql://root:root@db:3306/todos"
+}
+
+model Task {
+  id Int @id @default(autoincrement())
+  title String
+  color String
+  completed Boolean @default(false)
+  created BigInt
+}
