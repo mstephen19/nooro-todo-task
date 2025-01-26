@@ -23,3 +23,13 @@ docker compose up
 ```
 
 Once the MySQL server & HTTP server have started, the client application will start in `dev` mode. It can be accessed via `http://localhost:3000`.
+
+## Moving forward
+
+Given that the time spent on this project was capped at 6 hours, there are a few things that are left to be improved:
+
+1. Client-side error messaging. For the sake of time, `alert()` is used to notify the user of errors.
+2. SSR error messaging - `error.tsx` should be added to notify the user of 500 errors.
+3. Make API routes more composable - currently the `app.route().METHOD()` configurations are slightly repeating themselves.
+
+The next feature in this app would likely be the addition of a `User` table in the DB, and login functionality.
