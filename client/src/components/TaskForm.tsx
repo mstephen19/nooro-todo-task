@@ -4,25 +4,44 @@ import { FormEventHandler, useState } from 'react';
 import AddButton from './AddButton';
 import { COLOR_OPTIONS } from '@/consts';
 import { useRouter } from 'next/navigation';
+import { tasks } from '@/api';
 
-const CreateForm = ({ createTask }: { createTask: (data: { title: string; color: `#${string}` }) => Promise<void> }) => {
+type TaskFormProps =
+    | ({ type: 'create' } & {
+          createTask: (data: { title: string; color: `#${string}` }) => Promise<void>;
+          updateTask?: never;
+          task?: never;
+      })
+    | ({ type: 'update' } & {
+          updateTask: (data: { id: number; title?: string; color?: `#${string}` }) => Promise<void>;
+          createTask?: never;
+          task: tasks.Task;
+      });
+
+const TaskForm = ({ task, type, createTask, updateTask }: TaskFormProps) => {
     const router = useRouter();
 
-    const [title, setTitle] = useState('');
+    const [title, setTitle] = useState(task?.title || '');
     const titleValid = Boolean(title.trim().length);
 
-    const [color, setColor] = useState<`#${string}`>('#');
+    const [color, setColor] = useState<`#${string}`>(task?.color || '#');
     const colorValid = color.length > 1;
 
     const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault();
 
         try {
-            createTask({ title, color });
+            if (type === 'create') {
+                await createTask({ title, color });
+            }
+
+            if (type === 'update') {
+                await updateTask({ id: task.id, title, color });
+            }
 
             router.push('/');
         } catch {
-            alert('Failed to create task.');
+            alert(`Failed to ${type === 'create' ? 'add' : 'update'} task.`);
         }
     };
 
@@ -63,9 +82,9 @@ const CreateForm = ({ createTask }: { createTask: (data: { title: string; color:
                 </div>
             </fieldset>
 
-            <AddButton type='submit' disabled={!titleValid || !colorValid} text='Add Task' />
+            <AddButton type='submit' disabled={!titleValid || !colorValid} text={`${type === 'create' ? 'Add' : 'Update'} Task`} />
         </form>
     );
 };
 
-export default CreateForm;
+export default TaskForm;

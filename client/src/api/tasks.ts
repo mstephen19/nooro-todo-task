@@ -33,6 +33,8 @@ export type PageInfo = {
     | { hasNextPage: false; nextPage: null }
 );
 
+export const get = ({ task_id }: { task_id: string | number }) => api<never, never, Task | null>('GET', `/tasks/${task_id}`)();
+
 export const list = api<
     never,
     {

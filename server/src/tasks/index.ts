@@ -1,7 +1,7 @@
 import prisma from '../config/prisma';
 import { getUnixEpoch } from '../utils';
 
-import type { CreateInput, PaginationInput, RemoveInput, UpdateInput } from './schemas';
+import type { CreateInput, GetTaskInput, PaginationInput, RemoveInput, UpdateInput } from './schemas';
 
 export * as schemas from './schemas';
 
@@ -21,7 +21,17 @@ export const counts = async () => {
     };
 };
 
-export const get = async ({ page, per_page }: PaginationInput) => {
+export const get = async ({ task_id }: GetTaskInput) => {
+    const task = await prisma.task.findFirst({
+        where: {
+            id: +task_id,
+        },
+    });
+
+    return task;
+};
+
+export const list = async ({ page, per_page }: PaginationInput) => {
     per_page = Math.min(+per_page, MAX_PER_PAGE);
     page = +page;
 

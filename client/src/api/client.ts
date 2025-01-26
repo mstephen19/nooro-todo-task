@@ -23,6 +23,7 @@ export const fetchClient =
         });
 
         if (!res.status.toString().startsWith('2')) {
+            console.log(await res.text());
             throw new Error('Request failed with non-200 status code.');
         }
 

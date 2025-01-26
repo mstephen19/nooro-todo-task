@@ -1,4 +1,5 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { AssertionError } from 'assert';
 import type { ErrorRequestHandler, RequestHandler } from 'express';
 import type z from 'zod';
 import { ZodError } from 'zod';
@@ -39,7 +40,7 @@ export const validateQuery =
 export const errorHandler: ErrorRequestHandler = (err, _, res, __) => {
     if (!err) return;
 
-    if (err instanceof ZodError) {
+    if (err instanceof ZodError || err instanceof AssertionError) {
         res.status(400).json({ error: 'Invalid schema.' });
         return;
     }
@@ -51,6 +52,8 @@ export const errorHandler: ErrorRequestHandler = (err, _, res, __) => {
         res.status(404).json({ error: 'Record not found.' });
         return;
     }
+
+    console.log(err);
 
     res.status(500).json({ error: 'Internal server error.' });
 };

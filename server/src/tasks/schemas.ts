@@ -1,5 +1,11 @@
 import z from 'zod';
 
+export const getTaskInput = z.object({
+    task_id: z.number().or(z.string()),
+});
+
+export type GetTaskInput = z.infer<typeof getTaskInput>;
+
 export const paginationInput = z.object({
     page: z.number().or(z.string()),
     per_page: z.number().or(z.string()),

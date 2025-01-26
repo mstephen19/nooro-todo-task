@@ -2,6 +2,7 @@ import express from 'express';
 import prisma from './config/prisma';
 import * as tasks from './tasks';
 import * as middleware from './middleware';
+import assert from 'assert';
 
 await prisma.$connect();
 
@@ -27,7 +28,7 @@ app.route('/tasks')
     .get(
         middleware.validateQuery(tasks.schemas.paginationInput),
         middleware.asyncWrapper(async (req, res) => {
-            const taskList = await tasks.get(req.query as tasks.schemas.PaginationInput);
+            const taskList = await tasks.list(req.query as tasks.schemas.PaginationInput);
 
             res.status(201).json(taskList);
         })
@@ -62,6 +63,16 @@ app.route('/tasks/counts').get(
         const taskCounts = await tasks.counts();
 
         res.status(200).json(taskCounts);
+    })
+);
+
+app.route('/tasks/:id').get(
+    middleware.asyncWrapper(async (req, res) => {
+        assert(typeof req.params.id === 'string');
+
+        const data = await tasks.get({ task_id: req.params.id });
+
+        res.status(200).json(data);
     })
 );
 

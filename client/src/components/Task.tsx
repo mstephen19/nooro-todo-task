@@ -2,6 +2,7 @@ import Image from 'next/image';
 
 import type { tasks } from '@/api';
 import { memo, useCallback } from 'react';
+import Link from 'next/link';
 
 const Task = memo(function Task({
     task,
@@ -33,7 +34,9 @@ const Task = memo(function Task({
                 )}
             </button>
 
-            <span className='break-all flex-1'>{task.title}</span>
+            <Link className='flex-1' href={`/create/${task.id}`}>
+                <span className='break-all'>{task.title}</span>
+            </Link>
 
             <button onClick={handleRemove} type='button' className='h-fit active:opacity-75'>
                 <Image alt='Trash' src='/trash.svg' width={27} height={30} />
