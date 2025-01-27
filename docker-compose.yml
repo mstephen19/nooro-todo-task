@@ -40,11 +40,13 @@ services:
         ports:
             - '3000:3000'
         volumes:
-            - './client:/app:ro'
+            - './client/src:/app/src:ro'
+            - './client/src/next.config.ts:/app/src/next.config.ts:ro'
             - '/app/node_modules'
-            - '/app/.next'
+            - 'next_cache:/app/.next'
         stdin_open: true
         tty: true
 volumes:
     data:
     migrations:
+    next_cache:

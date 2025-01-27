@@ -49,6 +49,6 @@ export const list = api<
 
 export const create = api<Pick<Task, 'title' | 'color'>, never, Task>('POST', '/tasks');
 
-export const update = api<{ id: number } & Partial<Pick<Task, 'completed' | 'title'>>, never, Task>('PATCH', '/tasks');
+export const update = api<{ id: number } & Partial<Pick<Task, 'completed' | 'title' | 'color'>>, never, Task>('PATCH', '/tasks');
 
 export const remove = api<{ id: number }, never, Task>('DELETE', '/tasks');

@@ -30,6 +30,7 @@ export const updateInput = z.object({
     id: z.number(),
     title: z.string().optional(),
     completed: z.boolean().optional(),
+    color: z.string().optional(),
 });
 
 export type UpdateInput = z.infer<typeof updateInput>;
